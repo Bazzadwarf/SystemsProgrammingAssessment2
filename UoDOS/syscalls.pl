@@ -30,7 +30,9 @@ my @syscalls = (
 				"uptime", 
 				"open", 
 				"write", 
-				"close"
+				"close",
+				"chdir",
+				"getcwd"
 			   );
 
 my $i;			   

@@ -245,3 +245,51 @@ int sys_pipe(void)
 	fd[1] = fd1;
 	return 0;
 }
+
+int sys_chdir(void)
+{
+	
+	
+	char *directory;
+	int directoryLen;
+	char adjustedDirectoryPath[200];
+
+	// Get our parameters, if this fails return -1
+	if (argstr(0, &directory) < 0)
+	{
+		return -1;
+	}
+
+	// Get the length of the directory string
+	directoryLen = strlen(directory);
+
+	// Create a copy of our directory path
+	strcpy(adjustedDirectoryPath, directory);
+
+	// Check to see if our directory ends in a '/' or '\', if not append '/' to the directory path
+	if (directory[directoryLen] != '/' && directory[directoryLen] != '\\')
+	{
+		adjustedDirectoryPath[directoryLen] = '/';	
+	}
+
+	// Create a pointer to our current process
+	Process *curproc = myProcess();
+
+	File * file = fsFat12Open(curproc->Cwd, adjustedDirectoryPath, 0);
+
+	if (file == 0)
+	{
+		return -1;
+	}
+
+	// Set the current directory to our new directory
+	safestrcpy(curproc->Cwd, adjustedDirectoryPath, 200);
+
+	// Our system call succeded, return 0
+	return 0;
+}
+
+int sys_getcwd(void)
+{
+	return 0;
+}

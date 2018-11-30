@@ -23,6 +23,8 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int chdir(char * directory);
+int getcwd(char * currentDirectory, int sizeOfBuffer);
 
 // The following are C standard library functions implemented in our
 // equivalent of the C run-time library
