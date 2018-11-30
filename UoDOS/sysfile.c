@@ -248,48 +248,51 @@ int sys_pipe(void)
 
 int sys_chdir(void)
 {
-	
-	
 	char *directory;
-	int directoryLen;
-	char adjustedDirectoryPath[200];
+	//File *f;
+	int dirlen;
 
-	// Get our parameters, if this fails return -1
 	if (argstr(0, &directory) < 0)
 	{
 		return -1;
 	}
 
-	// Get the length of the directory string
-	directoryLen = strlen(directory);
+	dirlen = strlen(directory);
 
-	// Create a copy of our directory path
-	strcpy(adjustedDirectoryPath, directory);
-
-	// Check to see if our directory ends in a '/' or '\', if not append '/' to the directory path
-	if (directory[directoryLen] != '/' && directory[directoryLen] != '\\')
+	if(directory[dirlen] != '/' && directory[dirlen] != '\\')
 	{
-		adjustedDirectoryPath[directoryLen] = '/';	
+		directory[dirlen] = '/';
 	}
 
-	// Create a pointer to our current process
-	Process *curproc = myProcess();
+	Process *currProc = myProcess();
 
-	File * file = fsFat12Open(curproc->Cwd, adjustedDirectoryPath, 0);
+	// f = fsFat12Open(currProc->Cwd, directory, 1);
+	// if (f == 0)
+	// {
+	// 	return -1;
+	// }
 
-	if (file == 0)
-	{
-		return -1;
-	}
+	strcpy(currProc->Cwd, directory);
 
-	// Set the current directory to our new directory
-	safestrcpy(curproc->Cwd, adjustedDirectoryPath, 200);
-
-	// Our system call succeded, return 0
 	return 0;
 }
 
 int sys_getcwd(void)
 {
+	char *directory;
+	int bufferSize;
+
+	if(argstr(0,&directory) < 0 || argint(1, &bufferSize) < 0)
+	{
+		return -1;
+	}	
+	
+	Process *currProc = myProcess();
+	safestrcpy(directory, currProc->Cwd, bufferSize);
+	if(strlen(directory) <= 0)
+	{
+		return -1;
+	}
+
 	return 0;
 }

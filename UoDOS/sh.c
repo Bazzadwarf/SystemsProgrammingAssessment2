@@ -150,23 +150,6 @@ void runcmd(struct cmd *cmd)
 
 void changeDirectory(char * path)
 {
-	// printf(path);
-	// char directory[200];
-	// strcpy(directory, path);
-	// int directoryLen = strlen(directory);
-	// for (int i = 0; i < directoryLen; i++)
-	// {
-	// 	printf("b");
-	// }
-	// printf("\n");
-	// if (directory[directoryLen - 1] != '/' && directory[directoryLen - 1] != '\\')
-	// {
-	// 	directory[directoryLen] = '/';
-	// }
-
-	// printf(directory);
-	// printf("\n");
-
 	// TODO:  Add call to chdir here
 	int result = chdir(path);
 	if (result == -1)
@@ -176,13 +159,21 @@ void changeDirectory(char * path)
 		return;
 	}
 	// It didn't fail, do another thing
-	printf("It worked");
+	printf("0: Directory exists");
 }
 
 void getCurrentDirectory(char * buffer, int bufferSize)
 {
 	// TODO Change this function to use call to getcwd
-	buffer[0] = 0;
+	if(getcwd(buffer, bufferSize) == -1)
+	{
+		printf("-1: Unable to obtain current working directory");
+		printf("\n");
+		return;
+	}
+	printf("0: Current Directory successfully returned");
+	printf("\n");
+	return;
 }
 
 int getcmd(char *buf, int nbuf)
