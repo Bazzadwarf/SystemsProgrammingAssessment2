@@ -151,15 +151,14 @@ void runcmd(struct cmd *cmd)
 void changeDirectory(char * path)
 {
 	// TODO:  Add call to chdir here
-	int result = chdir(path);
-	if (result == -1)
+	if (chdir(path) == -1)
 	{
 		// It failed do a thing
 		printf("-1: Error in CD command \n");
 		return;
 	}
 	// It didn't fail, do another thing
-	printf("0: Directory exists");
+	printf("0: Directory exists \n");
 }
 
 void getCurrentDirectory(char * buffer, int bufferSize)
@@ -167,13 +166,31 @@ void getCurrentDirectory(char * buffer, int bufferSize)
 	// TODO Change this function to use call to getcwd
 	if(getcwd(buffer, bufferSize) == -1)
 	{
-		printf("-1: Unable to obtain current working directory");
-		printf("\n");
+		printf("-1: Unable to obtain current working directory \n");
 		return;
 	}
-	printf("0: Current Directory successfully returned");
-	printf("\n");
+	printf("0: Current Directory successfully returned \n");
 	return;
+}
+
+void listCurrentDirectory(char * directory)
+{
+	int result = opendir(directory);
+
+	if(result == 0)
+	{
+		return;
+	}
+
+	if(readdir() == -1)
+	{
+		return;
+	}
+
+	if(closedir() == -1)
+	{
+		return;
+	}
 }
 
 int getcmd(char *buf, int nbuf)
@@ -204,6 +221,11 @@ int main(void)
 			buf[strlen(buf) - 1] = 0;  // chop \n
 			changeDirectory(buf + 3);
 			continue;
+		}
+		else if (buf[0] == 'l' && buf[1] == 'd' && buf [2] == ' ')
+		{
+			buf[strlen(buf) - 1] = 0;
+			
 		}
 		if (fork1() == 0)
 		{

@@ -1,4 +1,5 @@
 struct _Stat;
+struct _DirectoryEntry;
 
 // System calls.  If you add any new system calls to UoDOS, the signature of the calls for
 // user programs should be added here, as well as adding them to syscalls.pl.
@@ -25,6 +26,9 @@ int sleep(int);
 int uptime(void);
 int chdir(char * directory);
 int getcwd(char * currentDirectory, int sizeOfBuffer);
+int opendir(char * directory);
+int readdir(int directoryDescriptor, struct _DirectoryEntry * dirEntry);
+int closedir(int directoryDescriptor);
 
 // The following are C standard library functions implemented in our
 // equivalent of the C run-time library

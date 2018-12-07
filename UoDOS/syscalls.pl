@@ -32,7 +32,10 @@ my @syscalls = (
 				"write", 
 				"close",
 				"chdir",
-				"getcwd"
+				"getcwd",
+				"opendir",
+				"readdir",
+				"closedir"
 			   );
 
 my $i;			   

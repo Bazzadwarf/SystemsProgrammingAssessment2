@@ -248,51 +248,129 @@ int sys_pipe(void)
 
 int sys_chdir(void)
 {
+	// Variables for the system call
 	char *directory;
-	//File *f;
-	int dirlen;
+	File *f;
+	int dirlen, cwdlen;
 
+	// Get the directory passed in to the system call
 	if (argstr(0, &directory) < 0)
 	{
 		return -1;
 	}
 
+	// Get the directory length
 	dirlen = strlen(directory);
 
+	// Check to see if we have a directory passed in
+	if (dirlen <= 0)
+	{
+		return -1;
+	}
+
+	// Get a pointer to the curent process
+	Process *currProc = myProcess();
+
+	// Validate the directory by attempting to open the directory
+	f = fsFat12Open(currProc->Cwd, directory, 1);
+
+	// If the directory doesn't exist, return -1
+	if (f == 0)
+	{
+		return -1;
+	}
+
+	// Close the file we have successfully opened
+	fsFat12Close(f);
+
+	// Append a '/' to our directory
 	if(directory[dirlen] != '/' && directory[dirlen] != '\\')
 	{
 		directory[dirlen] = '/';
 	}
 
-	Process *currProc = myProcess();
+	// Get the current working directory length
+	cwdlen = strlen(currProc->Cwd);
 
-	// f = fsFat12Open(currProc->Cwd, directory, 1);
-	// if (f == 0)
-	// {
-	// 	return -1;
-	// }
+	// Set out current working directory
+	safestrcpy(currProc->Cwd + cwdlen, directory, 200 - cwdlen);
 
-	strcpy(currProc->Cwd, directory);
+	// Check to see if our directory has copied corerectly
+	if (strlen(currProc->Cwd) <= 0)
+	{
+		return -1;
+	}
 
+	// Return 0, the system call has executed correctly
 	return 0;
 }
 
 int sys_getcwd(void)
 {
+	// System call variables
 	char *directory;
 	int bufferSize;
 
+	// Get the variables passed in to our system called
 	if(argstr(0,&directory) < 0 || argint(1, &bufferSize) < 0)
 	{
 		return -1;
 	}	
 	
+	// Get our current process and our processess current working directory
 	Process *currProc = myProcess();
 	safestrcpy(directory, currProc->Cwd, bufferSize);
+
+	// Check our string has copied correctly
 	if(strlen(directory) <= 0)
 	{
 		return -1;
 	}
+	return 0;
+}
 
+int sys_opendir(void)
+{
+	char *directory;
+	int dirlen;
+	File *f;
+
+	if(argstr(0, &directory) < 0)
+	{
+		return 0;
+	}
+
+	// Get the directory length
+	dirlen = strlen(directory);
+
+	// Check to see if we have a directory passed in
+	if (dirlen <= 0)
+	{
+		return 0;
+	}
+
+	Process * currProc = myProcess();
+
+	// Validate the directory by attempting to open the directory
+	f = fsFat12Open(currProc->Cwd, directory, 1);
+
+	// If the directory doesn't exist, return -1
+	if (f == 0)
+	{
+		return 0;
+	}
+
+	f->
+
+	return 1;
+}
+
+int sys_readdir(void)
+{
+	return 0;
+}
+
+int sys_closedir(void)
+{
 	return 0;
 }
