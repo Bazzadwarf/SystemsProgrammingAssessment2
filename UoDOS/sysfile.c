@@ -145,30 +145,53 @@ int sys_fstat(void)
 
 int sys_open(void)
 {
-	char *path;
-	int fd, omode;
-	File * f;
+	char *path; // Path of the file we wish to open.
+	int fd;		// The file descriptor number
+	int omode;	// The mode of the file
+	File * f;	// A file structure to hold our file.
 
+	// Get the parameter from the funciton
 	if (argstr(0, &path) < 0 || argint(1, &omode) < 0)
 	{
-		return -1;
+		return -1;	// Throw an error if we can't get the variables
 	}
 	
+	// Get the current process
 	Process *curproc = myProcess();
+
 	// At the moment, only file reading is supported
+	// Open the file
 	f = fsFat12Open(curproc->Cwd, path, 0);
+
+	// Check to see if we found the file specified in the path
 	if (f == 0)
 	{
-		return -1;
+		return -1;	// Throw an error if we can't find the file
 	}
+
+	// Allocate a File Descriptor number to our file
 	fd = fdalloc(f);
+
+	// Check to see if fdalloc executed successfully
 	if (fd < 0)
 	{
-		fileClose(f);
-		return -1;
+		// fdalloc failed
+		fileClose(f);	// Close file
+		return -1;		// Throw error
 	}
+
+	// Uses bitwise '&', checks the significan bits of the two numbers
+
+	// Check to see if the file is Readable
+	// Is readable if omode is not equal to O_WRONLY, otherwise it is not readable
 	f->Readable = !(omode & O_WRONLY);
+
+	// Check to see if the file is writeable
+	// Is writable depends on the the bit shift of omode and O_WRONLY are true,
+	// or if the bit shift of omode and O_RDWR are true
 	f->Writable = (omode & O_WRONLY) || (omode & O_RDWR);
+
+	// Return the File Descriptor number
 	return fd;
 }
 
@@ -330,36 +353,8 @@ int sys_getcwd(void)
 }
 
 int sys_opendir(void)
-{
-	char *directory;
-	int dirlen;
-	File *f;
-
-	if(argstr(0, &directory) < 0)
-	{
-		return 0;
-	}
-
-	// Get the directory length
-	dirlen = strlen(directory);
-	// Check to see if we have a directory passed in
-	if (dirlen <= 0)
-	{
-		return 0;
-	}
-
-	Process * currProc = myProcess();
-	// Validate the directory by attempting to open the directory
-	f = fsFat12Open(currProc->Cwd, directory, 1);
-
-	// If the directory doesn't exist, return -1
-	if (f == 0)
-	{
-		return 0;
-	}
-
-	
-
+{	
+	//here is some code
 	return 1;
 }
 
