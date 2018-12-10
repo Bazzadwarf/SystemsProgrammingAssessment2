@@ -342,7 +342,6 @@ int sys_opendir(void)
 
 	// Get the directory length
 	dirlen = strlen(directory);
-
 	// Check to see if we have a directory passed in
 	if (dirlen <= 0)
 	{
@@ -350,7 +349,6 @@ int sys_opendir(void)
 	}
 
 	Process * currProc = myProcess();
-
 	// Validate the directory by attempting to open the directory
 	f = fsFat12Open(currProc->Cwd, directory, 1);
 
@@ -360,7 +358,7 @@ int sys_opendir(void)
 		return 0;
 	}
 
-	f->
+	
 
 	return 1;
 }
