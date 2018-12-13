@@ -11,7 +11,7 @@ CC = gcc
 CFLAGS= -ffreestanding -m32 -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -Werror -fno-omit-frame-pointer -fno-stack-protector
 OBJS= kernel_main.o proc.o spinlock.o sleeplock.o string.o console.o mp.o kalloc.o bio.o vm.o lapic.o uart.o file.o ide.o pipe.o ioapic.o trap.o kbd.o syscall.o sysproc.o sysfile.o exec.o picirq.o fs.o
 ULIBOBJS = ulib.o usys.o printf.o umalloc.o
-USERPROGS = init.exe sh.exe echo.exe
+USERPROGS = init.exe sh.exe echo.exe dir.exe
 HEADERS = bpb.h buf.h date.h defs.h fcntl.h file.h fs.h kbd.h memlayout.h mp.h param.h pe.h proc.h sleeplock.h spinlock.h stat.h traps.h types.h user.h x86.h 
 
 syscall.h: syscalls.pl

@@ -175,6 +175,11 @@ void getCurrentDirectory(char * buffer, int bufferSize)
 
 void listCurrentDirectory(char * directory)
 {
+	directory = "usrbin/dir.exe";
+	char * args[MAXARGS];
+	args[0] = 0;
+	exec(directory, args);
+	
 	int result = opendir(directory);
 
 	if(result == 0)
@@ -182,15 +187,15 @@ void listCurrentDirectory(char * directory)
 		return;
 	}
 
-	if(readdir() == -1)
-	{
-		return;
-	}
+	// if(readdir() == -1)
+	// {
+	// 	return;
+	// }
 
-	if(closedir() == -1)
-	{
-		return;
-	}
+	// if(closedir() == -1)
+	// {
+	// 	return;
+	// }
 }
 
 int getcmd(char *buf, int nbuf)
@@ -225,7 +230,8 @@ int main(void)
 		else if (buf[0] == 'l' && buf[1] == 'd' && buf [2] == ' ')
 		{
 			buf[strlen(buf) - 1] = 0;
-			
+			listCurrentDirectory(buf + 3);
+			continue;
 		}
 		if (fork1() == 0)
 		{
