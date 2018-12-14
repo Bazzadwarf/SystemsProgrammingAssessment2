@@ -369,11 +369,14 @@ int sys_opendir(void)
 	// Get the current process
 	Process *curproc = myProcess();
 
+	// Check the path valid
 	if (pathLen < 0)
 	{
 		return 0;
 	}
-	else if (pathLen == 0)
+	
+	// Check to see if we need to make any adjustments to our current working directory before we try and open our file
+	if (pathLen == 0)
 	{
 		curproc->Cwd[strlen(curproc->Cwd) - 1] = 0;
 	}
@@ -399,7 +402,7 @@ int sys_opendir(void)
 		return 0;		// Throw error
 	}
 
-	//here is some code
+	// Return our File Descriptor Number
 	return fd;
 }
 

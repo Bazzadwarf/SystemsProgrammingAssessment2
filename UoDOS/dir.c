@@ -43,6 +43,12 @@ int main(int argc, char *argv[])
 
 	printf("File number obtained, time to read some files bro \n \n");
 
+	// While we can read directory entries
+		//Read directory entries
+		// Check we haven't ran our of files to read
+
+	// Close our directory once we have read all of the files to be read in the directory
+
 	// END OF PROGRAM
 	exit();
 }
