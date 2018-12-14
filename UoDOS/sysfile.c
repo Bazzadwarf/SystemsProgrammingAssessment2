@@ -366,13 +366,17 @@ int sys_opendir(void)
 
 	int pathLen = strlen(path);
 
-	if (pathLen <= 0)
+	// Get the current process
+	Process *curproc = myProcess();
+
+	if (pathLen < 0)
 	{
 		return 0;
 	}
-
-	// Get the current process
-	Process *curproc = myProcess();
+	else if (pathLen == 0)
+	{
+		curproc->Cwd[strlen(curproc->Cwd) - 1] = 0;
+	}
 
 	// At the moment, only file reading is supported
 	// Open the file
@@ -381,7 +385,7 @@ int sys_opendir(void)
 	// If the directory doesn't exist, return 0
 	if (f == 0)
 	{
-		return -1;
+		return 0;
 	}
 
 	// Allocate a File Descriptor number to our file

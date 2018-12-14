@@ -8,8 +8,7 @@ int main(int argc, char *argv[])
 	char * directory;
 	directory = argv[0];
 	printf("\nMoving into Directory Program \n");
-	printf("argv[0]: ");
-	printf(directory);
+	printf("argv[0]: %s (Size %d)", directory, strlen(directory));
 	printf("\n \n");
 
 	// Get the current working directory
@@ -32,7 +31,17 @@ int main(int argc, char *argv[])
 		exit();
 	}
 
+	int fd = opendir(directory);
 
+	printf("File Directory Number: %d \n \n", fd);
+
+	if (fd == 0)
+	{
+		printf("Unable to obtain a file number \n ABORT ABORT \n \n");
+		exit();
+	}
+
+	printf("File number obtained, time to read some files bro \n \n");
 
 	// END OF PROGRAM
 	exit();
