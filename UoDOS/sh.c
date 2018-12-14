@@ -175,50 +175,29 @@ void getCurrentDirectory(char * buffer, int bufferSize)
 
 void listCurrentDirectory(char * directory)
 {
-	char *userProg = "/usrbin/dir.exe";
-	char oldDirectory[255];
+	char *userProg = "/usrbin/dir";
+	//char oldDirectory[255];
 	char * args[MAXARGS];
 
-	// Get the current working directory
-	char cwd[255];
-	if (getcwd(cwd, 255) == -1)
-	{
-		printf("-1: Unable to obtain current working directory \n");
-		return;
-	}
+	args[0] = directory;
 
-	// Check if we are trying to list the content of the root directory
-	if (strlen(cwd) == 1 && strlen(directory) ==  0)
-	{
-		// If we are, throw an error
-		printf("Unable to list the content of the root directory \n");
-		return;
-	}
+	exec(userProg, args);
 
-	// Check to see if we are in a sub-directory
-	if(strlen(cwd) > 1 && strlen(directory) == 0)
-	{
-		// Trim our current working directory down so we can use it in our user program
-		strcpy(oldDirectory, cwd + 1);
-		oldDirectory[strlen(oldDirectory) - 1] = 0;
-		
-		// Temporary printf
-		// printf(oldDirectory);
-		// printf("\n");
-		
-		// Move our current working directory back up to the root
-		chdir("-r");
-		
-		// Pass our directory into our arguments
-		args[0] = oldDirectory;
-		
-		// Execute the program
-		exec(userProg, args);
-	}
-	else
-	{
+	//// Get the current working directory
+	//char cwd[255];
+	//if (getcwd(cwd, 255) == -1)
+	//{
+	//	printf("-1: Unable to obtain current working directory \n");
+	//	return;
+	//}
 
-	}
+	//// Check if we are trying to list the content of the root directory
+	//if (strlen(cwd) == 1 && strlen(directory) ==  0)
+	//{
+	//	// If we are, throw an error
+	//	printf("Unable to list the content of the root directory \n");
+	//	return;
+	//}
 	
 }
 

@@ -294,15 +294,6 @@ int sys_chdir(void)
 	// Get a pointer to the curent process
 	Process *currProc = myProcess();
 
-	char * returnToRoot;
-	returnToRoot = "-r";
-
-	if(directory == returnToRoot)
-	{
-		safestrcpy(currProc->Cwd, "/", 200);
-		return 0;
-	}
-
 	// Validate the directory by attempting to open the directory
 	f = fsFat12Open(currProc->Cwd, directory, 1);
 
@@ -373,6 +364,13 @@ int sys_opendir(void)
 		return 0;	// Throw an error if we can't get the variables
 	}
 
+	int pathLen = strlen(path);
+
+	if (pathLen <= 0)
+	{
+		return 0;
+	}
+
 	// Get the current process
 	Process *curproc = myProcess();
 
@@ -380,10 +378,10 @@ int sys_opendir(void)
 	// Open the file
 	f = fsFat12Open(curproc->Cwd, path, 0);
 
-	// If the directory doesn't exist, return -1
+	// If the directory doesn't exist, return 0
 	if (f == 0)
 	{
-		return 0;
+		return -1;
 	}
 
 	// Allocate a File Descriptor number to our file
@@ -394,7 +392,7 @@ int sys_opendir(void)
 	{
 		// fdalloc failed
 		fileClose(f);	// Close file
-		return -1;		// Throw error
+		return 0;		// Throw error
 	}
 
 	//here is some code

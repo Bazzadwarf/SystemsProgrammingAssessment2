@@ -4,47 +4,36 @@
 
 int main(int argc, char *argv[])
 {
-	printf("List Directory program started \n");
-	
+	// Get the directory passed in
 	char * directory;
 	directory = argv[0];
-	
-	// if(strlen(directory) <= 0)
-	// {
-	// 	printf("No directory supplied, will search in the current working \n");
-	// 	exit();
-	// }
-
+	printf("\nMoving into Directory Program \n");
+	printf("argv[0]: ");
 	printf(directory);
-    printf("\n");
-    
-	// Try and open our directory
-    int result = opendir(directory);
-	if(result == 0)
+	printf("\n \n");
+
+	// Get the current working directory
+	char currentWorkingDirectory[200];
+	if (getcwd(currentWorkingDirectory, 200) == -1)
 	{
-		printf("Problem finding a directory entry");
+		// Throw an error if we are unable to obtain the current working directory
+		printf("Unable to obtain current working directory \n \n");
+		exit();
+	}
+	printf("Current working directory obtained: ");
+	printf(currentWorkingDirectory);
+	printf("\n \n");
+
+	// Check to see if we are trying to read the root directory
+	if (strlen(currentWorkingDirectory) == 1 && strlen(directory) == 0)
+	{
+		// Throw an error if we are trying to read the root directory because it is special
+		printf("Currently trying to read the root directory \nABORT ABORT \n \n");
 		exit();
 	}
 
-	printf("%d\n", result);
 
-	// struct _DirectoryEntry * directoryEntry;
-	// if(readdir(result, directoryEntry) == -1)
-	// {
-	// 	printf("It fucked up\n");
-	// 	exit();
-	// }
-	// else
-	// {
-	// 	printf("It worked");
-	// }
 
-	// if(closedir() == -1)
-	// {
-	// 	return;
-	// }
-	//chdir(directory);
-	printf("List Directory program finished \n");
-    
+	// END OF PROGRAM
 	exit();
 }
