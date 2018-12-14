@@ -175,10 +175,14 @@ void getCurrentDirectory(char * buffer, int bufferSize)
 
 void listCurrentDirectory(char * directory)
 {
-	directory = "usrbin/dir.exe";
+	char *userProg = "usrbin/dir.exe";
+
 	char * args[MAXARGS];
-	args[0] = 0;
-	exec(directory, args);
+	
+	args[0] = directory;
+	//args[0] = 0;
+	//printf(args);
+	exec(userProg, args);
 	
 	int result = opendir(directory);
 
@@ -227,12 +231,18 @@ int main(void)
 			changeDirectory(buf + 3);
 			continue;
 		}
-		else if (buf[0] == 'l' && buf[1] == 'd' && buf [2] == ' ')
+		else if (buf[0] == 'l' && buf[1] == 'd' && buf[2] == ' ')
 		{
 			buf[strlen(buf) - 1] = 0;
 			listCurrentDirectory(buf + 3);
 			continue;
 		}
+		else if (buf[0] == 'd' && buf[1] == 'i' && buf[2] == 'r' && buf[3] == ' ')
+		{
+			buf[strlen(buf) - 1] = 0;
+			listCurrentDirectory(buf + 4);
+			continue;
+		} 
 		if (fork1() == 0)
 		{
 			runcmd(parsecmd(buf));

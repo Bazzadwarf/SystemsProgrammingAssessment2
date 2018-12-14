@@ -4,6 +4,25 @@
 
 int main(int argc, char *argv[])
 {
-	printf("User program executed \n");
+	printf(argv[0]);
+    printf("\n");
+    printf("User program executed \n");
+
+    //int result = opendir(directory);
+
+	// if(result == 0)
+	// {
+	// 	return;
+	// }
+
+	// if(readdir() == -1)
+	// {
+	// 	return;
+	// }
+
+	// if(closedir() == -1)
+	// {
+	// 	return;
+	// }
     exit();
 }
