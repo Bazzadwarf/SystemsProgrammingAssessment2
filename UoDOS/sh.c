@@ -183,23 +183,7 @@ void listCurrentDirectory(char * directory)
 	//args[0] = 0;
 	//printf(args);
 	exec(userProg, args);
-	
-	int result = opendir(directory);
 
-	if(result == 0)
-	{
-		return;
-	}
-
-	// if(readdir() == -1)
-	// {
-	// 	return;
-	// }
-
-	// if(closedir() == -1)
-	// {
-	// 	return;
-	// }
 }
 
 int getcmd(char *buf, int nbuf)
