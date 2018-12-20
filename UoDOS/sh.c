@@ -180,9 +180,15 @@ void listCurrentDirectory(char * directory)
 	char * args[MAXARGS];
 
 	args[0] = directory;
-
-	exec(userProg, args);
-
+	
+	int pid;
+	
+	pid = fork();
+	if(pid == 0)
+	{
+		exec(userProg, args);
+	}
+	
 	//// Get the current working directory
 	//char cwd[255];
 	//if (getcwd(cwd, 255) == -1)

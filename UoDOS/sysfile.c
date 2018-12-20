@@ -383,7 +383,7 @@ int sys_opendir(void)
 
 	// At the moment, only file reading is supported
 	// Open the file
-	f = fsFat12Open(curproc->Cwd, path, 0);
+	f = fsFat12Open(curproc->Cwd, path, 1);
 
 	// If the directory doesn't exist, return 0
 	if (f == 0)
@@ -398,7 +398,7 @@ int sys_opendir(void)
 	if (fd < 0)
 	{
 		// fdalloc failed
-		fileClose(f);	// Close file
+		fsFat12Close(f);	// Close file
 		return 0;		// Throw error
 	}
 
@@ -408,10 +408,51 @@ int sys_opendir(void)
 
 int sys_readdir(void)
 {
+	int directoryDescriptor;
+	struct _DirectoryEntry * directoryEntry;
+
+	if (argint(0, &directoryDescriptor) < 0 || argptr(1, (void*)&directoryEntry, sizeof(struct _DirectoryEntry)) < 0)
+	{
+		return -1;
+	}
+	
+	Process * curProc = myProcess();
+
+	if (curProc->OpenFile[directoryDescriptor] == 0)
+	{
+		return -1;
+	}
+
+	fileRead(curProc->OpenFile[directoryDescriptor], (char*)directoryDescriptor, sizeof(struct _DirectoryEntry));	
+
+	if(directoryEntry->FileSize < 0)
+	{
+		return -1;
+	}
+
 	return 0;
 }
 
 int sys_closedir(void)
 {
+	int directoryDescriptor;
+	File * f;
+
+	if(argint(0, &directoryDescriptor) < 0)
+	{
+		return -1;
+	}
+
+	Process * curProc = myProcess();
+
+	f = curProc->OpenFile[directoryDescriptor];
+
+	if(f == 0)
+	{
+		return -1;
+	}
+
+	fileClose(f);
+
 	return 0;
 }
