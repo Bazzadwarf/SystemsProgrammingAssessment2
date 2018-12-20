@@ -186,7 +186,7 @@ void listCurrentDirectory(char * directory)
 	{
 		exec(userProg, args);
 	}
-	return;
+	//return;
 }
 
 int getcmd(char *buf, int nbuf)
