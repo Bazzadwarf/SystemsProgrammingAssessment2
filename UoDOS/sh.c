@@ -175,36 +175,18 @@ void getCurrentDirectory(char * buffer, int bufferSize)
 
 void listCurrentDirectory(char * directory)
 {
-	char *userProg = "/usrbin/dir";
-	//char oldDirectory[255];
+	char *userProg = "/usrbin/ls.exe";
+	
 	char * args[MAXARGS];
-
 	args[0] = directory;
 	
 	int pid;
-	
 	pid = fork();
 	if(pid == 0)
 	{
 		exec(userProg, args);
 	}
-	
-	//// Get the current working directory
-	//char cwd[255];
-	//if (getcwd(cwd, 255) == -1)
-	//{
-	//	printf("-1: Unable to obtain current working directory \n");
-	//	return;
-	//}
-
-	//// Check if we are trying to list the content of the root directory
-	//if (strlen(cwd) == 1 && strlen(directory) ==  0)
-	//{
-	//	// If we are, throw an error
-	//	printf("Unable to list the content of the root directory \n");
-	//	return;
-	//}
-	
+	return;
 }
 
 int getcmd(char *buf, int nbuf)
@@ -236,7 +218,7 @@ int main(void)
 			changeDirectory(buf + 3);
 			continue;
 		}
-		else if (buf[0] == 'l' && buf[1] == 'd' && buf[2] == ' ')
+		else if (buf[0] == 'l' && buf[1] == 's' && buf[2] == ' ')
 		{
 			buf[strlen(buf) - 1] = 0;
 			listCurrentDirectory(buf + 3);
